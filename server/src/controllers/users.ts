@@ -6,7 +6,7 @@ import { User } from "@prisma/client";
 import { prismaCLient } from "..";
 //-----------------------------------------------------------
 export const addAddress = async (req: Request, res: Response) => {
-  //AddressSchema.parse(req.body);
+  AddressSchema.parse(req.body);
   let user: User;
   try {
     user = await prismaCLient.user.findFirstOrThrow({
