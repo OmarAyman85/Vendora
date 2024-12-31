@@ -6,14 +6,10 @@ import { ErrorCode } from "../exceptions/root";
 //-----------------------------------------------------------
 export const createProduct = async (req: Request, res: Response) => {
   createProductSchema.parse(req.body);
-  //----------------------------------------------------------------------
-  //----------------------------------------------------------------------
-  delete req.body.user;
-  //----------------------------------------------------------------------
-  //----------------------------------------------------------------------
+  const { user, ...restOfBody } = req.body;
   const product = await prismaCLient.product.create({
     data: {
-      ...req.body,
+      ...restOfBody,
       tags: req.body.tags.join(","),
     },
   });
@@ -23,12 +19,8 @@ export const createProduct = async (req: Request, res: Response) => {
 //-----------------------------------------------------------
 export const updateProduct = async (req: Request, res: Response) => {
   try {
-    //----------------------------------------------------------------------
-    //----------------------------------------------------------------------
-    delete req.body.user;
-    //----------------------------------------------------------------------
-    //----------------------------------------------------------------------
-    const product = req.body;
+    const { user, ...restOfBody } = req.body;
+    const product = restOfBody;
     if (product.tags) {
       product.tags = product.tags.join(",");
     }
@@ -49,17 +41,12 @@ export const updateProduct = async (req: Request, res: Response) => {
 //-----------------------------------------------------------
 export const deleteProduct = async (req: Request, res: Response) => {
   try {
-    //----------------------------------------------------------------------
-    //----------------------------------------------------------------------
-    delete req.body.user;
-    //----------------------------------------------------------------------
-    //----------------------------------------------------------------------
     await prismaCLient.product.delete({
       where: {
         id: +req.params.id,
       },
     });
-    res.status(204);
+    res.status(204).json({ success: true });
   } catch (err) {
     throw new NotFoundException(
       "Product is not found !!",
