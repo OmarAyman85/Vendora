@@ -6,7 +6,6 @@ import { ErrorCode } from "../exceptions/root";
 //-----------------------------------------------------------
 export const createProduct = async (req: Request, res: Response) => {
   createProductSchema.parse(req.body);
-  console.log("I am here and the req body is 1: ", req.body);
   //----------------------------------------------------------------------
   //----------------------------------------------------------------------
   delete req.body.user;
